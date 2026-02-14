@@ -32,21 +32,30 @@ body {
 
 /* La foto ahora se posiciona relativa al centro real */
 .contenedor-foto {
-    position: absolute;
+    position: fixed; /* Cambiado a fixed */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 5;
+    pointer-events: none;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .foto-centro {
-    width: clamp(100px, 25vw, 150px); /* Tamaño responsivo */
-    height: clamp(100px, 25vw, 150px);
+    /* Ajusta el tamaño aquí para que encaje en el hueco del corazón */
+    width: 100px; 
+    height: 100px;
     border-radius: 50%;
     border: 3px solid #ff4d6d;
     box-shadow: 0 0 20px #ff4d6d;
     object-fit: cover;
+}
+
+.contenedor-texto {
+    position: fixed;
+    top: 10%; /* Bajamos el texto para que no choque con la barra de arriba */
+    width: 100%;
+    text-align: center;
 }
