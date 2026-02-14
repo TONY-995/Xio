@@ -37,26 +37,20 @@ class Particle {
         this.force = 0.08;
     }
 
-    update() {
-        const centerX = canvas.width / 2;
-        const centerY = canvas.height / 2;
-        const pulse = 1 + Math.sin(Date.now() * 0.003) * 0.1;
-        const currentScale = getScale(); // 3. Usamos la escala actualizada aquí
+   update() {
+    // Esto garantiza que el corazón siempre use el centro de la pantalla actual
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    
+    const pulse = 1 + Math.sin(Date.now() * 0.003) * 0.1;
+    const currentScale = getScale(); 
 
-        // 4. Recalculamos el objetivo dinámicamente
-        const targetX = centerX + this.baseX * currentScale * pulse;
-        const targetY = centerY + this.baseY * currentScale * pulse;
+    // Aquí sumamos el centro al objetivo
+    const targetX = centerX + this.baseX * currentScale * pulse;
+    const targetY = centerY + this.baseY * currentScale * pulse;
+    
+    // ... resto de tu código de dx, dy, vx, vy ...
 
-        const dx = targetX - this.x;
-        const dy = targetY - this.y;
-
-        this.vx += dx * this.force;
-        this.vy += dy * this.force;
-        this.vx *= this.friction;
-        this.vy *= this.friction;
-
-        this.x += this.vx;
-        this.y += this.vy;
     }
 
     draw() {

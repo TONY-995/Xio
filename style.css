@@ -4,75 +4,49 @@
 
 body {
     margin: 0;
-    padding: 0;
-    background-color: #000; /* Fondo negro galaxia */
     overflow: hidden;
+    background-color: #000;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
+    flex-direction: column;
+    justify-content: center; /* Centra verticalmente */
+    align-items: center;     /* Centra horizontalmente */
     height: 100vh;
+    width: 100vw;
 }
 
-canvas {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
-
+/* El texto ahora no necesita un "top" fijo, se ajusta solo */
 .contenedor-texto {
     position: absolute;
-    top: 5%; /* Texto arriba del corazón */
-    z-index: 10;
+    top: 10%; /* Lo bajamos un poquito de la orilla superior */
     text-align: center;
     width: 100%;
+    z-index: 10;
 }
 
 .Love_You {
     color: #ff4d6d;
-    font-size: 3.5rem;
-    font-family: 'Brush Script MT', cursive; /* Fuente elegante */
-    text-shadow: 0 0 20px #ff4d6d;
-    animation: brillo 2s infinite ease-in-out;
+    font-size: clamp(1.2rem, 5vw, 2.5rem); /* Se encoge en móvil y crece en PC */
+    font-family: 'Brush Script MT', cursive;
+    text-shadow: 0 0 15px #ff4d6d;
 }
 
-@keyframes brillo {
-    0%, 100% { opacity: 0.8; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.1); }
-}
-
+/* La foto ahora se posiciona relativa al centro real */
 .contenedor-foto {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 5;
-    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .foto-centro {
-    width: 150px; 
-    height: 150px;
-    object-fit: cover;
+    width: clamp(100px, 25vw, 150px); /* Tamaño responsivo */
+    height: clamp(100px, 25vw, 150px);
     border-radius: 50%;
-    border: 4px solid #ff4d6d;
-    box-shadow: 0 0 30px #ff4d6d;
-}
-@media (max-width: 600px) {
-    .Love_You {
-        font-size: 1.5rem !important; /* Texto más pequeño */
-        top: 8% !important; /* Más arriba para que no tape el corazón */
-        width: 90%;
-    }
-
-    .contenedor-foto {
-        top: 50% !important; /* Asegura centrado vertical */
-        left: 50% !important; /* Asegura centrado horizontal */
-        transform: translate(-50%, -50%) !important;
-    }
-
-    .foto-centro {
-        width: 100px !important; /* Tamaño ideal para móvil */
-        height: 100px !important;
-    }
+    border: 3px solid #ff4d6d;
+    box-shadow: 0 0 20px #ff4d6d;
+    object-fit: cover;
 }
