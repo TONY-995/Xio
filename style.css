@@ -25,9 +25,12 @@ body {
 
 .Love_You {
     color: #ff4d6d;
-    font-size: clamp(1.2rem, 5vw, 2.5rem); /* Se encoge en móvil y crece en PC */
+    /* Mínimo: 1.8rem, Ideal: 8% del ancho de pantalla, Máximo: 3rem */
+    font-size: clamp(1.8rem, 8vw, 3rem); 
     font-family: 'Brush Script MT', cursive;
     text-shadow: 0 0 15px #ff4d6d;
+    width: 90%;
+    margin: 0 auto;
 }
 
 /* La foto ahora se posiciona relativa al centro real */
@@ -58,4 +61,14 @@ body {
     top: 10%; /* Bajamos el texto para que no choque con la barra de arriba */
     width: 100%;
     text-align: center;
+}
+@media (max-width: 600px) {
+    .contenedor-texto {
+        top: 12% !important; /* Lo bajamos un poquito más para que no choque con la orilla */
+    }
+
+    .Love_You {
+        font-size: 2.2rem !important; /* Forzamos un tamaño grande en el cel */
+        line-height: 1.2; /* Ajusta el espacio entre líneas si el texto es largo */
+    }
 }
