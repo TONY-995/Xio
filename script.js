@@ -6,7 +6,7 @@ canvas.height = window.innerHeight;
 
 let particles = [];
 const particleCount = 2000;
-const scale = 15;
+const scale = window.innerWidth < 600 ? 10 : 15; 
 let currentColor = '#ff4d6d'; // Color inicial (rosado)
 
 function getHeartPoint(t) {

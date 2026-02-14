@@ -10,6 +10,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100vw;
     height: 100vh;
 }
 
@@ -56,4 +57,22 @@ canvas {
     border-radius: 50%;
     border: 4px solid #ff4d6d;
     box-shadow: 0 0 30px #ff4d6d;
+}
+@media (max-width: 600px) {
+    .Love_You {
+        font-size: 1.8rem; /* Texto más pequeño para que no se corte */
+        top: 10%; /* Lo subimos un poco más */
+        width: 85%;
+    }
+
+    .foto-centro {
+        width: 110px; /* Foto más pequeña para que encaje en el corazón */
+        height: 110px;
+    }
+
+    /* Ajustamos el tamaño del corazón de partículas para móvil */
+    /* Nota: Esto se hace mejor en el JS, pero aquí ayudamos al contenedor */
+    .contenedor-foto {
+        top: 55%; /* Bajamos un poquito la foto para centrarla en el corazón de móvil */
+    }
 }
