@@ -6,8 +6,9 @@ canvas.height = window.innerHeight;
 
 let particles = [];
 const particleCount = 2000;
-const scale = window.innerWidth < 600 ? 10 : 15; 
-let currentColor = '#ff4d6d'; // Color inicial (rosado)
+// 1. Usamos una función para obtener la escala actual según el ancho de pantalla
+let getScale = () => window.innerWidth < 600 ? 9 : 15; 
+let currentColor = '#ff4d6d';
 
 function getHeartPoint(t) {
     const x = 16 * Math.pow(Math.sin(t), 3);
@@ -15,12 +16,8 @@ function getHeartPoint(t) {
     return { x, y };
 }
 
-// Función para generar un color aleatorio brillante
 function getRandomColor() {
-    const colors = [
-        '#ff4d6d', '#ff0000', '#00ffcc', '#0077ff', 
-        '#ffcc00', '#9d00ff', '#ffffff', '#ff8800'
-    ];
+    const colors = ['#ff4d6d', '#ff0000', '#00ffcc', '#0077ff', '#ffcc00', '#9d00ff', '#ffffff', '#ff8800'];
     return colors[Math.floor(Math.random() * colors.length)];
 }
 
@@ -30,8 +27,9 @@ class Particle {
         const target = getHeartPoint(this.t);
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.targetX = target.x * scale;
-        this.targetY = target.y * scale;
+        // 2. Guardamos solo el punto base, calcularemos la escala en el update
+        this.baseX = target.x;
+        this.baseY = target.y;
         this.size = Math.random() * 2 + 1;
         this.vx = 0;
         this.vy = 0;
@@ -43,9 +41,14 @@ class Particle {
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
         const pulse = 1 + Math.sin(Date.now() * 0.003) * 0.1;
+        const currentScale = getScale(); // 3. Usamos la escala actualizada aquí
 
-        const dx = (centerX + this.targetX * pulse) - this.x;
-        const dy = (centerY + this.targetY * pulse) - this.y;
+        // 4. Recalculamos el objetivo dinámicamente
+        const targetX = centerX + this.baseX * currentScale * pulse;
+        const targetY = centerY + this.baseY * currentScale * pulse;
+
+        const dx = targetX - this.x;
+        const dy = targetY - this.y;
 
         this.vx += dx * this.force;
         this.vy += dy * this.force;
@@ -57,7 +60,7 @@ class Particle {
     }
 
     draw() {
-        ctx.fillStyle = currentColor; // Usa el color actual global
+        ctx.fillStyle = currentColor;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -69,24 +72,20 @@ class Particle {
     }
 }
 
+// Inicialización
 for (let i = 0; i < particleCount; i++) {
     particles.push(new Particle());
 }
 
 function animate() {
-    // Fondo con estela (Motion Blur)
     ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; 
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Dibuja estrellas más grandes
+    // Estrellas
     ctx.fillStyle = 'white';
-    for (let i = 0; i < 15; i++) { // Menos cantidad para que no saturen
+    for (let i = 0; i < 15; i++) {
         ctx.beginPath();
-        // Genera una posición aleatoria
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height;
-        // El número 2 es el radio (tamaño). Súbelo si las quieres aún más grandes.
-        ctx.arc(x, y, 2, 0, Math.PI * 2); 
+        ctx.arc(Math.random() * canvas.width, Math.random() * canvas.height, 2, 0, Math.PI * 2); 
         ctx.fill();
     }
 
@@ -98,17 +97,23 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-
-// Evento de clic mejorado: Explosión + Cambio de Color
+// Eventos
 window.addEventListener('mousedown', () => {
-    currentColor = getRandomColor(); // Cambia el color de todas las partículas
+    currentColor = getRandomColor();
+    particles.forEach(p => p.explode());
+});
+
+// 5. Soporte para pantallas táctiles (Celulares)
+window.addEventListener('touchstart', (e) => {
+    // e.preventDefault(); // Opcional: evita zoom al tocar rápido
+    currentColor = getRandomColor();
     particles.forEach(p => p.explode());
 });
 
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    // No hace falta resetear partículas, el update() usará el nuevo getScale()
 });
 
 animate();
-
